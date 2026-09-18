@@ -1,24 +1,40 @@
-# README
+# Nirvana – Comeback-Tracker
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Comeback-Tracker für Disziplin & Produktivität.
+Benutzer checken täglich ihre Gewohnheiten ein, verfolgen Streaks
+und motivieren sich in Accountability-Gruppen.
 
-Things you may want to cover:
+## Setup (für Lehrer / neuen PC)
 
-* Ruby version
+1. Repository klonen:
+   git clone https://github.com/DEIN-USERNAME/nirvana.git
+   cd nirvana
 
-* System dependencies
+2. Gems installieren:
+   bundle install
 
-* Configuration
+3. Datenbank erstellen und Testdaten laden:
+   bin/rails db:setup
 
-* Database creation
+4. Server starten:
+   bin/rails server
 
-* Database initialization
+5. Browser öffnen: http://localhost:3000
 
-* How to run the test suite
+## Test-Login (nach db:seed)
 
-* Services (job queues, cache servers, search engines, etc.)
+- Admin: admin@nirvana.ch / Admin123
+- User: user@nirvana.ch / User123
 
-* Deployment instructions
+## Tests ausführen
 
-* ...
+bin/rails test
+
+## Technologien
+
+- Ruby 4.0.6
+- Rails 8.1.3.1
+- SQLite3
+- Pundit (Autorisierung)
+- PaperTrail (Aktivitätsprotokoll)
+- bcrypt (Passwort-Hashing)

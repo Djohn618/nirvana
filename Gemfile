@@ -18,7 +18,16 @@ gem "stimulus-rails"
 gem "jbuilder"
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
-# gem "bcrypt", "~> 3.1.7"
+gem "bcrypt", "~> 3.1.7"
+
+# Berechtigungen prüfen (wer darf was?)
+gem "pundit", "~> 2.4"
+
+# Aktivitätsprotokoll (loggt automatisch alle Änderungen)
+gem "paper_trail", "~> 16.0"
+
+# Kompatibilität für Cookie-/Session-Verarbeitung in dieser Rails-Version
+gem "json", "~> 2.0"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
