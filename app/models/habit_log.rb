@@ -9,7 +9,7 @@ class HabitLog < ApplicationRecord
   # Pro User, Habit und Tag nur ein Eintrag
   validates :habit_id, uniqueness: {
     scope: [:user_id, :date],
-    message: "wurde heute schon eingetragen"
+    message: "It was already entered today"
   }
 
   # Standardwert: nicht erledigt

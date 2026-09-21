@@ -7,7 +7,7 @@ class Habit < ApplicationRecord
   validates :name, presence: true
 
   # Ein User kann nicht zwei Gewohnheiten mit dem gleichen Namen haben
-  validates :name, uniqueness: { scope: :user_id, message: "hast du schon erstellt" }
+  validates :name, uniqueness: { scope: :user_id, message: "has already been created" }
 
   # --- Aktivitätsprotokoll ---
   has_paper_trail

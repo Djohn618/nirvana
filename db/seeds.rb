@@ -1,4 +1,4 @@
-puts "Erstelle Testdaten..."
+puts "Creating test data..."
 
 # Admin-User erstellen
 admin = User.create!(
@@ -19,7 +19,7 @@ user1 = User.create!(
 )
 
 user2 = User.create!(
-  username: "Maria",
+  username: "Sarah",
   email: "sarah@nirvana.ch",
   password: "Sarah123",
   password_confirmation: "Sarah123",
@@ -27,18 +27,18 @@ user2 = User.create!(
 )
 
 # Gewohnheiten für User 1
-sport = Habit.create!(user: user1, name: "Sport")
+sport = Habit.create!(user: user1, name: "Workout")
 meditation = Habit.create!(user: user1, name: "Meditation")
-lernen = Habit.create!(user: user1, name: "Lernen")
-aufstehen = Habit.create!(user: user1, name: "Früh aufstehen")
+lernen = Habit.create!(user: user1, name: "Study")
+aufstehen = Habit.create!(user: user1, name: "Wake up early")
 
 # Gewohnheiten für User 2
-Habit.create!(user: user2, name: "Joggen")
-Habit.create!(user: user2, name: "Lesen")
+Habit.create!(user: user2, name: "Running")
+Habit.create!(user: user2, name: "Reading")
 Habit.create!(user: user2, name: "Meditation")
 
 # HabitLogs für die letzten 7 Tage (User 1)
-[sport, meditation, lernen, aufstehen].each do |habit|
+[workout, meditation, study, wake_early].each do |habit|
   7.times do |i|
     HabitLog.create!(
       user: user1,
@@ -52,7 +52,7 @@ end
 # Gruppe erstellen
 group = Group.create!(
   name: "Morning Crew",
-  description: "Wir stehen jeden Tag früh auf und ziehen unser Programm durch.",
+  description: "We rise early every day and stick to our routine.",
   creator: user1
 )
 
@@ -60,4 +60,4 @@ group = Group.create!(
 Membership.create!(user: user1, group: group, role: :leader)
 Membership.create!(user: user2, group: group, role: :member)
 
-puts "Fertig! #{User.count} User, #{Habit.count} Gewohnheiten, #{HabitLog.count} Logs, #{Group.count} Gruppen erstellt."
+puts "Done! #{User.count} users, #{Habit.count} habits, #{HabitLog.count} logs, #{Group.count} groups created."

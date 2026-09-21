@@ -8,5 +8,5 @@ class Membership < ApplicationRecord
 
   # --- Validierungen ---
   # Ein User kann nur einmal pro Gruppe Mitglied sein
-  validates :user_id, uniqueness: { scope: :group_id, message: "ist bereits Mitglied dieser Gruppe" }
+  validates :user_id, uniqueness: { scope: :group_id, message: "is already a member of this group" }
 end
