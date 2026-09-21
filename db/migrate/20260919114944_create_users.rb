@@ -7,6 +7,8 @@ class CreateUsers < ActiveRecord::Migration[8.1]
       t.integer :role
       t.string :unconfirmed_email
       t.string :confirmation_token
+      t.index :email, unique: true
+      t.index :confirmation_token, unique: true
 
       t.timestamps
     end

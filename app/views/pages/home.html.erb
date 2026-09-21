@@ -1,0 +1,17 @@
+<h1>Welcome to Nirvana</h1>
+<p>Your comeback tracker for discipline & productivity.</p>
+
+<% if logged_in? %>
+  <p>Hi, <%= current_user.username %>!</p>
+  <ul>
+    <li><%= link_to "My Habits", habits_path %></li>
+    <li><%= link_to "Check-in", new_habit_log_path %></li>
+    <li><%= link_to "Groups", groups_path %></li>
+    <li><%= link_to "Profile", profile_path %></li>
+  </ul>
+<% else %>
+  <p>
+    <%= link_to "Log in", new_session_path %> |
+    <%= link_to "Sign up", new_registration_path %>
+  </p>
+<% end %>
