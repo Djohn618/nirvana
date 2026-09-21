@@ -1,40 +1,40 @@
-# Nirvana – Comeback-Tracker
+# Nirvana – Comeback Tracker
 
-Comeback-Tracker für Disziplin & Produktivität.
-Benutzer checken täglich ihre Gewohnheiten ein, verfolgen Streaks
-und motivieren sich in Accountability-Gruppen.
+A comeback tracker for discipline & productivity.
+Users create their own habits, check in daily, track streaks,
+and motivate each other in accountability groups.
 
-## Setup (für Lehrer / neuen PC)
+## Setup (for teacher / new PC)
 
-1. Repository klonen:
-   git clone https://github.com/DEIN-USERNAME/nirvana.git
+1. Clone repository:
+   git clone https://github.com/Djohn618/nirvana.git
    cd nirvana
 
-2. Gems installieren:
+2. Install gems:
    bundle install
 
-3. Datenbank erstellen und Testdaten laden:
+3. Create database and load test data:
    bin/rails db:setup
 
-4. Server starten:
+4. Start server:
    bin/rails server
 
-5. Browser öffnen: http://localhost:3000
+5. Open browser: http://localhost:3000
 
-## Test-Login (nach db:seed)
+## Test login (after db:seed)
 
-- Admin: admin@nirvana.ch / Admin123
-- User: user@nirvana.ch / User123
+- Admin: admin@nirvana.ch / Admin12345678
+- User: user@nirvana.ch / User12345678
 
-## Tests ausführen
+## Run tests
 
 bin/rails test
 
-## Technologien
+## Tech stack
 
 - Ruby 4.0.6
 - Rails 8.1.3.1
 - SQLite3
-- Pundit (Autorisierung)
-- PaperTrail (Aktivitätsprotokoll)
-- bcrypt (Passwort-Hashing)
+- Pundit (authorization)
+- PaperTrail (activity log)
+- bcrypt (password hashing)
