@@ -1,11 +1,11 @@
 admin:
   username: TestAdmin
   email: admin@test.ch
-  password_digest: <%= BCrypt::Password.create("Admin123") %>
+  password_digest: <%= BCrypt::Password.create("Admin12345678") %>
   role: 1
 
 member:
   username: TestUser
   email: user@test.ch
-  password_digest: <%= BCrypt::Password.create("User123") %>
+  password_digest: <%= BCrypt::Password.create("User12345678") %>
   role: 0

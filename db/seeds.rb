@@ -4,8 +4,8 @@ puts "Creating test data..."
 admin = User.create!(
   username: "Admin",
   email: "admin@nirvana.ch",
-  password: "Admin123",
-  password_confirmation: "Admin123",
+  password: "Admin12345678",
+  password_confirmation: "Admin12345678",
   role: :admin
 )
 
@@ -13,24 +13,24 @@ admin = User.create!(
 user1 = User.create!(
   username: "John",
   email: "user@nirvana.ch",
-  password: "User123",
-  password_confirmation: "User123",
+  password: "User12345678",
+  password_confirmation: "User12345678",
   role: :member
 )
 
 user2 = User.create!(
   username: "Sarah",
   email: "sarah@nirvana.ch",
-  password: "Sarah123",
-  password_confirmation: "Sarah123",
+  password: "Sarah12345678",
+  password_confirmation: "Sarah12345678",
   role: :member
 )
 
 # Gewohnheiten für User 1
-sport = Habit.create!(user: user1, name: "Workout")
+workout = Habit.create!(user: user1, name: "Workout")
 meditation = Habit.create!(user: user1, name: "Meditation")
-lernen = Habit.create!(user: user1, name: "Study")
-aufstehen = Habit.create!(user: user1, name: "Wake up early")
+study = Habit.create!(user: user1, name: "Study")
+wake_early = Habit.create!(user: user1, name: "Wake up early")
 
 # Gewohnheiten für User 2
 Habit.create!(user: user2, name: "Running")

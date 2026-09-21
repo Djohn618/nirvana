@@ -3,7 +3,7 @@ require "test_helper"
 class HabitsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @user = users(:member)
-    post session_path, params: { email: "user@test.ch", password: "User123" }
+    post session_path, params: { email: "user@test.ch", password: "User12345678" }
   end
 
   test "logged in user sees habits" do
