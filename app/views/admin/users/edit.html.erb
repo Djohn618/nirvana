@@ -1,0 +1,24 @@
+<h1>Edit user: <%= @user.username %></h1>
+
+<%= form_with model: @user, url: admin_user_path(@user) do |f| %>
+  <div>
+    <%= f.label :username, "Username" %><br>
+    <%= f.text_field :username %>
+  </div>
+
+  <div>
+    <%= f.label :email, "Email" %><br>
+    <%= f.email_field :email %>
+  </div>
+
+  <div>
+    <%= f.label :role, "Role" %><br>
+    <%= f.select :role, User.roles.keys %>
+  </div>
+
+  <div>
+    <%= f.submit "Save" %>
+  </div>
+<% end %>
+
+<%= link_to "Back to overview", admin_users_path %>
