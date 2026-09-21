@@ -1,0 +1,29 @@
+<h1>Activity log</h1>
+
+<table border="1" cellpadding="8">
+  <thead>
+    <tr>
+      <th>Time</th>
+      <th>Type</th>
+      <th>Action</th>
+      <th>Who</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @versions.each do |version| %>
+      <tr>
+        <td><%= version.created_at.strftime("%d.%m.%Y %H:%M") %></td>
+        <td><%= version.item_type %></td>
+        <td><%= version.event %></td>
+        <td>
+          <% if version.whodunnit.present? %>
+            <% user = User.find_by(id: version.whodunnit) %>
+            <%= user&.username || "Unknown" %>
+          <% else %>
+            System
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
