@@ -1,0 +1,9 @@
+<h1>My Profile</h1>
+
+<p><strong>Username:</strong> <%= current_user.username %></p>
+<p><strong>Email:</strong> <%= current_user.email %></p>
+<p><strong>Role:</strong> <%= current_user.role %></p>
+<p><strong>Member since:</strong> <%= current_user.created_at.strftime("%d.%m.%Y") %></p>
+<p><strong>Habits:</strong> <%= current_user.habits.count %></p>
+
+<%= link_to "Edit profile", edit_profile_path %>
