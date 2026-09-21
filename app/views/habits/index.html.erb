@@ -1,0 +1,54 @@
+<h1>My Habits</h1>
+
+<%= link_to "Create new habit", new_habit_path %>
+ | <%= link_to "Check-in today →", new_habit_log_path %>
+
+<% if @habits.any? %>
+  <table border="1" cellpadding="8">
+    <thead>
+      <tr>
+        <th>Habit</th>
+        <th>Current streak 🔥</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @habits.each do |habit| %>
+        <tr>
+          <td><%= habit.name %></td>
+          <td><%= @streaks[habit.id] %> days</td>
+          <td>
+            <%= button_to "Delete", habit_path(habit), method: :delete,
+                data: { confirm: "Really delete?" } %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <h2>History (last 7 days)</h2>
+  <table border="1" cellpadding="8">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <% @habits.each do |habit| %>
+          <th><%= habit.name %></th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <% 7.times do |i| %>
+        <% date = Date.today - i %>
+        <tr>
+          <td><%= date.strftime("%d.%m.%Y") %></td>
+          <% @habits.each do |habit| %>
+            <% log = habit.habit_logs.find_by(user: current_user, date: date) %>
+            <td><%= log&.completed ? "✅" : "❌" %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>You don't have any habits yet. Create your first one!</p>
+<% end %>
