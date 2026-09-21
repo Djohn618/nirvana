@@ -2,6 +2,9 @@ require_relative "boot"
 
 require "rails/all"
 
+# Warnung von PaperTrail unterdrücken
+ENV["PAPER_TRAIL_AR_VERSION_CHECK_DISABLE"] = "true"
+
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)

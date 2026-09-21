@@ -1,3 +1,4 @@
+ENV["PAPER_TRAIL_AR_VERSION_CHECK_DISABLE"] = "true"
 ENV["RAILS_ENV"] ||= "test"
 require_relative "../config/environment"
 require "rails/test_help"
