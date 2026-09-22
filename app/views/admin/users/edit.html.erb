@@ -11,10 +11,20 @@
     <%= f.email_field :email %>
   </div>
 
+<% if @user != current_user %>
   <div>
     <%= f.label :role, "Role" %><br>
     <%= f.select :role, User.roles.keys %>
   </div>
+<% else %>
+  <div>
+    <label>Role</label>
+    <p class="text-muted">
+      <%= @user.role.capitalize %>
+      <span class="text-small">(You cannot change your own role for security reasons.)</span>
+    </p>
+  </div>
+<% end %>
 
   <div>
     <%= f.submit "Save" %>

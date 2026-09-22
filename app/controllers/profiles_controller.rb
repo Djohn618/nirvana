@@ -7,37 +7,49 @@ class ProfilesController < ApplicationController
   def edit
   end
 
-  def update
-    if profile_params[:password].present?
-      unless current_user.authenticate(profile_params[:current_password])
-        current_user.errors.add(:current_password, "is incorrect")
-        render :edit, status: :unprocessable_entity
-        return
-      end
-    end
-
-    if profile_params[:email] != current_user.email && profile_params[:email].present?
-      new_email = profile_params[:email]
-      token = SecureRandom.urlsafe_base64
-
-      ActiveRecord::Base.transaction do
-        current_user.update!(unconfirmed_email: new_email, confirmation_token: token)
-        confirmation_link = "http://localhost:3000/profile/confirm?token=#{token}"
-        Rails.logger.debug "=== EMAIL CONFIRMATION LINK ==="
-        Rails.logger.debug confirmation_link
-        Rails.logger.debug "==============================="
-      end
-
-      redirect_to profile_path, notice: "Confirmation link has been logged to the console."
+def update
+  # 1. Passwort-Änderung (falls angefordert)
+  if profile_params[:password].present?
+    unless current_user.authenticate(profile_params[:current_password])
+      current_user.errors.add(:current_password, "is incorrect")
+      render :edit, status: :unprocessable_entity
       return
     end
 
-    if current_user.update(profile_update_params)
-      redirect_to profile_path, notice: "Profile updated."
-    else
+    unless current_user.update(password: profile_params[:password],
+                                password_confirmation: profile_params[:password_confirmation])
       render :edit, status: :unprocessable_entity
+      return
     end
   end
+
+  # 2. E-Mail-Änderung (falls angefordert)
+  if profile_params[:email] != current_user.email && profile_params[:email].present?
+    new_email = profile_params[:email]
+    token = SecureRandom.urlsafe_base64
+
+    ActiveRecord::Base.transaction do
+      current_user.update!(unconfirmed_email: new_email, confirmation_token: token)
+      confirmation_link = "http://localhost:3000/profile/confirm?token=#{token}"
+      Rails.logger.debug "=== EMAIL CONFIRMATION LINK ==="
+      Rails.logger.debug confirmation_link
+      Rails.logger.debug "==============================="
+    end
+  end
+
+  # 3. Username-Änderung
+  if profile_params[:username].present? && profile_params[:username] != current_user.username
+    current_user.update(username: profile_params[:username])
+  end
+
+  # 4. Erfolgsmeldung passend zusammensetzen
+  messages = []
+  messages << "Password updated" if profile_params[:password].present?
+  messages << "Confirmation link for '#{profile_params[:email]}' logged to console" if profile_params[:email] != current_user.email && profile_params[:email].present?
+  messages << "Profile updated" if messages.empty?
+
+  redirect_to profile_path, notice: messages.join(". ") + "."
+end
 
   def confirm
   user = User.find_by(confirmation_token: params[:token])

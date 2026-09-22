@@ -15,7 +15,11 @@ class Admin::UsersController < ApplicationController
     @user = User.find(params[:id])
     authorize @user
 
-    if @user.update(admin_user_params)
+    permitted = admin_user_params
+    # Admin darf eigene Rolle nicht ändern
+    permitted = permitted.except(:role) if @user == current_user
+
+    if @user.update(permitted)
       redirect_to admin_users_path, notice: "User '#{@user.username}' updated."
     else
       render :edit, status: :unprocessable_entity
