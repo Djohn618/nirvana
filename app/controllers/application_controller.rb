@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
   include Pundit::Authorization
 
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
   before_action :set_paper_trail_whodunnit
 
   def current_user
@@ -20,6 +22,11 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def user_not_authorized
+    flash[:alert] = "You don't have permission to access this page."
+    redirect_to(request.referrer || root_path)
+  end
 
   def user_for_paper_trail
     current_user&.id
