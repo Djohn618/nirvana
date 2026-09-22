@@ -1,24 +1,40 @@
 <h1>Groups</h1>
+<p class="subtitle">Your accountability circles.</p>
 
-<%= link_to "Create new group", new_group_path %>
+<p>
+  <%= link_to "Create new group", new_group_path, class: "btn" %>
+</p>
 
 <h2>My groups</h2>
 <% if @my_groups.any? %>
   <% @my_groups.each do |group| %>
-    <div style="border: 1px solid #ccc; padding: 10px; margin: 10px 0;">
-      <h3><%= link_to group.name, group %></h3>
-      <p><%= group.description %></p>
-      <p><small><%= group.members.count %> members</small></p>
-    </div>
+    <%= link_to group, class: "group-card" do %>
+      <div class="group-card-header">
+        <h3 class="group-card-title"><%= group.name %></h3>
+        <span class="group-card-members"><%= group.members.count %> members</span>
+      </div>
+      <p class="group-card-desc"><%= group.description %></p>
+    <% end %>
   <% end %>
 <% else %>
-  <p>You're not in any group yet.</p>
+  <div class="card text-center">
+    <p>You're not in any group yet.</p>
+  </div>
 <% end %>
 
 <h2>Other groups</h2>
-<% @other_groups.each do |group| %>
-  <div style="border: 1px solid #eee; padding: 10px; margin: 10px 0;">
-    <h3><%= link_to group.name, group %></h3>
-    <p><%= group.description %></p>
+<% if @other_groups.any? %>
+  <% @other_groups.each do |group| %>
+    <%= link_to group, class: "group-card group-card-muted" do %>
+      <div class="group-card-header">
+        <h3 class="group-card-title"><%= group.name %></h3>
+        <span class="group-card-members"><%= group.members.count %> members</span>
+      </div>
+      <p class="group-card-desc"><%= group.description %></p>
+    <% end %>
+  <% end %>
+<% else %>
+  <div class="card text-center">
+    <p>No other groups available.</p>
   </div>
 <% end %>

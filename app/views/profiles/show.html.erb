@@ -1,9 +1,35 @@
 <h1>My Profile</h1>
+<p class="subtitle">Your account details.</p>
 
-<p><strong>Username:</strong> <%= current_user.username %></p>
-<p><strong>Email:</strong> <%= current_user.email %></p>
-<p><strong>Role:</strong> <%= current_user.role %></p>
-<p><strong>Member since:</strong> <%= current_user.created_at.strftime("%d.%m.%Y") %></p>
-<p><strong>Habits:</strong> <%= current_user.habits.count %></p>
+<div class="card">
+  <div class="profile-grid">
+    <div class="profile-row">
+      <span class="profile-label">Username</span>
+      <span class="profile-value"><%= current_user.username %></span>
+    </div>
+    <div class="profile-row">
+      <span class="profile-label">Email</span>
+      <span class="profile-value"><%= current_user.email %></span>
+    </div>
+    <div class="profile-row">
+      <span class="profile-label">Role</span>
+      <span class="profile-value">
+        <span class="badge <%= current_user.admin? ? 'badge-gold' : 'badge-neutral' %>">
+          <%= current_user.role.capitalize %>
+        </span>
+      </span>
+    </div>
+    <div class="profile-row">
+      <span class="profile-label">Member since</span>
+      <span class="profile-value"><%= current_user.created_at.strftime("%d.%m.%Y") %></span>
+    </div>
+    <div class="profile-row">
+      <span class="profile-label">Habits</span>
+      <span class="profile-value"><%= current_user.habits.count %></span>
+    </div>
+  </div>
+</div>
 
-<%= link_to "Edit profile", edit_profile_path %>
+<p class="mt-4">
+  <%= link_to "Edit profile", edit_profile_path, class: "btn" %>
+</p>
