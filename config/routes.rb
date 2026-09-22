@@ -10,7 +10,9 @@ Rails.application.routes.draw do
   delete "logout", to: "sessions#destroy", as: :destroy_session
 
   # Profile
-  resource :profile, only: [:show, :edit, :update]
+  resource :profile, only: [:show, :edit, :update] do
+  get :confirm, on: :collection
+  end
 
   # Habits
   resources :habits, only: [:index, :new, :create, :destroy]

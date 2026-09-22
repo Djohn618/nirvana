@@ -1,5 +1,5 @@
 class ProfilesController < ApplicationController
-  before_action :require_login
+  before_action :require_login, except: [:confirm]
 
   def show
   end
@@ -38,6 +38,23 @@ class ProfilesController < ApplicationController
       render :edit, status: :unprocessable_entity
     end
   end
+
+  def confirm
+  user = User.find_by(confirmation_token: params[:token])
+
+  if user && user.unconfirmed_email.present?
+    ActiveRecord::Base.transaction do
+      user.update!(
+        email: user.unconfirmed_email,
+        unconfirmed_email: nil,
+        confirmation_token: nil
+      )
+    end
+    redirect_to profile_path, notice: "Email successfully changed to #{user.email}."
+  else
+    redirect_to root_path, alert: "Invalid or expired confirmation link."
+  end
+end
 
   private
 
