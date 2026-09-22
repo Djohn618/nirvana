@@ -1,32 +1,25 @@
 <h1>Daily check-in</h1>
-<p>What did you get done today? Click a habit to check it off.</p>
+<p class="subtitle">What did you get done today?</p>
 
 <% if @habits.any? %>
-  <table border="1" cellpadding="8">
-    <thead>
-      <tr>
-        <th>Habit</th>
-        <th>Status</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @habits.each do |habit| %>
-        <% log = @today_logs.find { |l| l.habit_id == habit.id } %>
-        <tr>
-          <td><%= habit.name %></td>
-          <td><%= log&.completed ? "✅ Done" : "❌ Open" %></td>
-          <td>
-            <%= button_to (log&.completed ? "Undo" : "Mark done ✓"),
-                habit_logs_path(habit_id: habit.id), method: :post %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-<% else %>
-  <p>You don't have any habits yet.
-     <%= link_to "Create your first one!", new_habit_path %></p>
-<% end %>
+  <% @habits.each do |habit| %>
+    <% log = @today_logs.find { |l| l.habit_id == habit.id } %>
+    <div class="checkin-card <%= log&.completed ? 'done' : '' %>">
+      <div class="checkin-name"><%= habit.name %></div>
+      <div>
+        <%= button_to (log&.completed ? "Undo" : "Mark done"),
+            habit_logs_path(habit_id: habit.id), method: :post,
+            class: (log&.completed ? "secondary small" : "small") %>
+      </div>
+    </div>
+  <% end %>
 
-<%= link_to "My streaks →", habits_path %>
+  <p class="text-center mt-4">
+    <%= link_to "View my streaks →", habits_path %>
+  </p>
+<% else %>
+  <div class="card text-center">
+    <p>You don't have any habits yet.
+       <%= link_to "Create your first one!", new_habit_path %></p>
+  </div>
+<% end %>

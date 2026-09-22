@@ -1,4 +1,5 @@
 <h1>My Habits</h1>
+<p class="subtitle">Track your daily disciplines.</p>
 
 <p>
   <%= link_to "Create new habit", new_habit_path, class: "btn" %>
@@ -6,69 +7,43 @@
 </p>
 
 <% if @habits.any? %>
-  <table>
-    <thead>
-      <tr>
-        <th>Habit</th>
-        <th>Current streak</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @habits.each do |habit| %>
-        <tr>
-          <td><%= habit.name %></td>
-          <td>
-            <span class="status-streak">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon"><path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0 1 12 21 8.25 8.25 0 0 1 6.038 7.047 8.287 8.287 0 0 0 9 9.601a8.983 8.983 0 0 1 3.361-6.867 8.21 8.21 0 0 0 3 2.48Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M12 18a3.75 3.75 0 0 0 .495-7.468 5.99 5.99 0 0 0-1.925 3.547 5.975 5.975 0 0 1-2.133-1.001A3.75 3.75 0 0 0 12 18Z" /></svg>
-              <%= @streaks[habit.id] %> days
-            </span>
-          </td>
-          <td>
-            <%= button_to "Delete", habit_path(habit), method: :delete,
-                class: "danger",
-                data: { confirm: "Really delete?" } %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+  <% @habits.each do |habit| %>
+    <div class="habit-card">
+      <div class="habit-info">
+        <div class="habit-name"><%= habit.name %></div>
+        <div class="habit-meta">Created <%= habit.created_at.strftime("%d.%m.%Y") %></div>
+      </div>
+      <div class="streak">
+        <div class="streak-number"><%= @streaks[habit.id] %></div>
+        <div class="streak-label">Day Streak</div>
+      </div>
+      <div>
+        <%= button_to "Delete", habit_path(habit), method: :delete,
+            class: "danger small",
+            data: { confirm: "Really delete this habit?" } %>
+      </div>
+    </div>
+  <% end %>
 
-  <h2>History (last 7 days)</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Date</th>
-        <% @habits.each do |habit| %>
-          <th><%= habit.name %></th>
-        <% end %>
-      </tr>
-    </thead>
-    <tbody>
-      <% 7.times do |i| %>
-        <% date = Date.today - i %>
-        <tr>
-          <td><%= date.strftime("%d.%m.%Y") %></td>
-          <% @habits.each do |habit| %>
-            <% log = habit.habit_logs.find_by(user: current_user, date: date) %>
-            <td>
-              <% if log&.completed %>
-                <span class="status-done">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="icon"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg>
-                </span>
-              <% else %>
-                <span class="status-open">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="icon"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
-                </span>
-              <% end %>
-            </td>
-          <% end %>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-<% else %>
+  <h2>Last 7 days</h2>
   <div class="card">
-    <p>You don't have any habits yet. Create your first one!</p>
+    <div class="streak-grid">
+      <% @habits.each do |habit| %>
+        <div class="streak-grid-row">
+          <div class="streak-grid-name"><%= habit.name %></div>
+          <div class="streak-grid-dots">
+            <% 6.downto(0) do |i| %>
+              <% date = Date.today - i %>
+              <% log = habit.habit_logs.find_by(user: current_user, date: date) %>
+              <div class="streak-dot <%= log&.completed ? 'done' : 'missed' %>" title="<%= date.strftime('%d.%m.%Y') %>"></div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% else %>
+  <div class="card text-center">
+    <p>You don't have any habits yet. Create your first one to get started!</p>
   </div>
 <% end %>
