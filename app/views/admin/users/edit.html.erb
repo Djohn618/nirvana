@@ -1,34 +1,48 @@
+<p>
+  <%= link_to "← Back to overview", admin_users_path, class: "text-muted" %>
+</p>
+
 <h1>Edit user: <%= @user.username %></h1>
 
-<%= form_with model: @user, url: admin_user_path(@user) do |f| %>
+<% if @user.errors.any? %>
+  <div class="error-box">
+    <h3><%= pluralize(@user.errors.count, "error") %> prohibited saving:</h3>
+    <ul>
+      <% @user.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_with model: @user, url: admin_user_path(@user), method: :patch do |f| %>
   <div>
-    <%= f.label :username, "Username" %><br>
+    <%= f.label :username, "Username" %>
     <%= f.text_field :username %>
   </div>
 
   <div>
-    <%= f.label :email, "Email" %><br>
+    <%= f.label :email, "Email" %>
     <%= f.email_field :email %>
   </div>
 
-<% if @user != current_user %>
+  <% if @user != current_user %>
+    <div>
+      <%= f.label :role, "Role" %>
+      <%= f.select :role, User.roles.keys %>
+    </div>
+  <% else %>
+    <div>
+      <label>Role</label>
+      <p class="text-muted">
+        <%= @user.role.capitalize %>
+        <span class="text-small">(You cannot change your own role for security reasons.)</span>
+      </p>
+    </div>
+  <% end %>
+
   <div>
-    <%= f.label :role, "Role" %><br>
-    <%= f.select :role, User.roles.keys %>
-  </div>
-<% else %>
-  <div>
-    <label>Role</label>
-    <p class="text-muted">
-      <%= @user.role.capitalize %>
-      <span class="text-small">(You cannot change your own role for security reasons.)</span>
-    </p>
+    <%= f.submit "Save" %>
+    <%= link_to "Cancel", admin_users_path, class: "btn secondary" %>
   </div>
 <% end %>
-
-  <div>
-  <%= f.submit "Save" %>
-  <%= link_to "Cancel", admin_users_path, class: "btn secondary" %>
-</div>
-
-<%= link_to "Back to overview", admin_users_path %>
