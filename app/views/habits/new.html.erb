@@ -2,7 +2,7 @@
 
 <%= form_with model: @habit do |f| %>
   <% if @habit.errors.any? %>
-    <div style="color: red;">
+    <div class="error-box">
       <ul>
         <% @habit.errors.full_messages.each do |msg| %>
           <li><%= msg %></li>
@@ -12,13 +12,12 @@
   <% end %>
 
   <div>
-    <%= f.label :name, "Habit name (e.g. Workout, Meditation, Reading)" %><br>
+    <%= f.label :name, "Habit name (e.g. Workout, Meditation, Reading)" %>
     <%= f.text_field :name, required: true, placeholder: "e.g. Workout" %>
   </div>
 
   <div>
-  <%= f.submit "Create" %>
-  <%= link_to "Cancel", habits_path, class: "btn secondary" %>
-</div>
-
-<%= link_to "Back", habits_path %>
+    <%= f.submit "Create" %>
+    <%= link_to "Cancel", habits_path, class: "btn secondary" %>
+  </div>
+<% end %>

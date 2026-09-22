@@ -1,16 +1,20 @@
 <p>
   <%= link_to "← Back to groups", groups_path, class: "text-muted" %>
 </p>
+
 <h1><%= @group.name %></h1>
-<p><%= @group.description %></p>
-<p><small>Created by: <%= @group.creator.username %></small></p>
+<p class="subtitle"><%= @group.description %></p>
+<p class="text-small text-muted">Created by: <%= @group.creator.username %></p>
 
 <% unless @is_member %>
-  <%= button_to "Join group", group_memberships_path(@group), method: :post %>
+  <p>
+    <%= button_to "Join group", group_memberships_path(@group), method: :post %>
+  </p>
 <% end %>
 
 <h2>Members (<%= @memberships.count %>)</h2>
-<table border="1" cellpadding="8">
+
+<table>
   <thead>
     <tr>
       <th>Name</th>
@@ -25,19 +29,26 @@
     <% @memberships.each do |membership| %>
       <tr>
         <td><%= membership.user.username %></td>
-        <td><%= membership.role %></td>
+        <td>
+          <span class="badge <%= membership.role == 'leader' ? 'badge-gold' : 'badge-neutral' %>">
+            <%= membership.role.capitalize %>
+          </span>
+        </td>
         <td>
           <% stats = @member_stats[membership.user_id] %>
           <% if stats && stats[:total] > 0 %>
             <%= stats[:done] %>/<%= stats[:total] %> done
-            <%= stats[:done] == stats[:total] ? "🔥" : "" %>
           <% else %>
-            No habits
+            <span class="text-muted">No habits</span>
           <% end %>
         </td>
-        <% if @is_leader && membership.user != current_user %>
+        <% if @is_leader %>
           <td>
-            <%= button_to "Remove", group_membership_path(@group, membership), method: :delete %>
+            <% if membership.user != current_user %>
+              <%= button_to "Remove", group_membership_path(@group, membership), method: :delete,
+                  class: "danger small",
+                  data: { confirm: "Remove #{membership.user.username} from this group?" } %>
+            <% end %>
           </td>
         <% end %>
       </tr>
@@ -46,15 +57,18 @@
 </table>
 
 <% if @is_member && !@is_leader %>
-  <p>
+  <p class="mt-4">
     <% my_membership = @group.memberships.find_by(user: current_user) %>
-    <%= button_to "Leave group", group_membership_path(@group, my_membership), method: :delete %>
+    <%= button_to "Leave group", group_membership_path(@group, my_membership), method: :delete,
+        class: "danger",
+        data: { confirm: "Leave this group?" } %>
   </p>
 <% end %>
 
 <% if @group.creator == current_user || current_user.admin? %>
-  <p>
-    <%= button_to "Delete group", @group, method: :delete,
-        data: { confirm: "Really delete?" } %>
+  <p class="mt-4">
+    <%= button_to "Delete group", group_path(@group), method: :delete,
+        class: "danger",
+        data: { confirm: "Really delete this group?" } %>
   </p>
 <% end %>
