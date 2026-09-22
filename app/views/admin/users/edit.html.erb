@@ -27,8 +27,8 @@
 <% end %>
 
   <div>
-    <%= f.submit "Save" %>
-  </div>
-<% end %>
+  <%= f.submit "Save" %>
+  <%= link_to "Cancel", admin_users_path, class: "btn secondary" %>
+</div>
 
 <%= link_to "Back to overview", admin_users_path %>

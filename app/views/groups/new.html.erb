@@ -1,3 +1,6 @@
+<p>
+  <%= link_to "← Back to groups", groups_path, class: "text-muted" %>
+</p>
 <h1>Create new group</h1>
 
 <%= form_with model: @group do |f| %>
@@ -22,6 +25,7 @@
   </div>
 
   <div>
-    <%= f.submit "Create group" %>
-  </div>
+  <%= f.submit "Create group" %>
+  <%= link_to "Cancel", groups_path, class: "btn secondary" %>
+</div>
 <% end %>

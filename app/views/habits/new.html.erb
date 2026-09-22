@@ -17,8 +17,8 @@
   </div>
 
   <div>
-    <%= f.submit "Create" %>
-  </div>
-<% end %>
+  <%= f.submit "Create" %>
+  <%= link_to "Cancel", habits_path, class: "btn secondary" %>
+</div>
 
 <%= link_to "Back", habits_path %>

@@ -677,3 +677,40 @@ hr { border: none; border-top: 1px solid var(--border-soft); margin: 32px 0; }
   font-size: 14px;
   margin: 0;
 }
+
+/* ===== Password Toggle ===== */
+.password-wrapper {
+  position: relative;
+}
+
+.password-wrapper input {
+  padding-right: 44px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: none;
+}
+
+.password-toggle:hover {
+  background: transparent;
+  color: var(--accent);
+  transform: translateY(-50%);
+  box-shadow: none;
+}
+
+.password-toggle svg {
+  width: 18px;
+  height: 18px;
+}
