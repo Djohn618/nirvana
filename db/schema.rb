@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_20_180846) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_22_111052) do
   create_table "groups", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.integer "creator_id"
@@ -24,6 +24,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_20_180846) do
     t.datetime "created_at", null: false
     t.date "date"
     t.integer "habit_id", null: false
+    t.integer "lock_version", default: 0, null: false
     t.datetime "updated_at", null: false
     t.integer "user_id", null: false
     t.index ["habit_id"], name: "index_habit_logs_on_habit_id"
