@@ -12,7 +12,7 @@ class MembershipsController < ApplicationController
       end
     end
 
-    redirect_to @group, notice: "You joined '#{@group.name}'! The focus habit '#{@group.focus_habit_name}' was added to your habits."
+    redirect_to @group, notice: "You joined '#{@group.name}'! '#{@group.focus_habit_name}' was added to your habits — you can keep tracking it even if you leave the group later."
   rescue ActiveRecord::RecordInvalid => e
     redirect_to @group, alert: "Could not join: #{e.message}"
   end

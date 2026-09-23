@@ -12,7 +12,7 @@
     <%= @group.focus_habit_name %>
   </p>
   <p class="text-small text-muted" style="margin-top: 8px;">
-    Every member automatically tracks this habit.
+    Every member automatically tracks this habit. It stays in your personal habits list even if you leave the group.
   </p>
 </div>
 
@@ -76,7 +76,7 @@
             <% if membership.user != current_user %>
               <%= button_to "Remove", group_membership_path(@group, membership), method: :delete,
                   class: "danger small",
-                  onclick: "return confirm('Remove #{membership.user.username} from this group?')" %>
+                  onclick: "return confirm('Remove #{membership.user.username} from this group? Their focus habit will stay in their habits list.')" %>
             <% end %>
           </td>
         <% end %>
@@ -90,7 +90,7 @@
     <% my_membership = @group.memberships.find_by(user: current_user) %>
     <%= button_to "Leave group", group_membership_path(@group, my_membership), method: :delete,
         class: "danger",
-        onclick: "return confirm('Leave this group? The focus habit will be removed from your habits if you have no check-ins for it yet.')" %>
+        onclick: "return confirm('Leave this group? \\'#{@group.focus_habit_name}\\' will stay in your habits list — you can keep tracking it on your own or delete it later from the Habits page.')" %>
   </p>
 <% end %>
 
@@ -98,6 +98,6 @@
   <p class="mt-4">
     <%= button_to "Delete group", group_path(@group), method: :delete,
         class: "danger",
-        onclick: "return confirm('Permanently delete group \\'#{@group.name}\\' and remove all members?')" %>
+        onclick: "return confirm('Permanently delete group \\'#{@group.name}\\' and remove all members? Their focus habits stay in their personal habits lists.')" %>
   </p>
 <% end %>
