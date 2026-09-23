@@ -47,7 +47,7 @@
             <% if membership.user != current_user %>
               <%= button_to "Remove", group_membership_path(@group, membership), method: :delete,
                   class: "danger small",
-                  data: { confirm: "Remove #{membership.user.username} from this group?" } %>
+                  data: { confirm: "Remove #{membership.user.username} from this group? They will lose access." } %>
             <% end %>
           </td>
         <% end %>
@@ -61,7 +61,7 @@
     <% my_membership = @group.memberships.find_by(user: current_user) %>
     <%= button_to "Leave group", group_membership_path(@group, my_membership), method: :delete,
         class: "danger",
-        data: { confirm: "Leave this group?" } %>
+        data: { confirm: "Leave this group? You will need to be added back if you want to rejoin." } %>
   </p>
 <% end %>
 
@@ -69,6 +69,6 @@
   <p class="mt-4">
     <%= button_to "Delete group", group_path(@group), method: :delete,
         class: "danger",
-        data: { confirm: "Really delete this group?" } %>
+        data: { confirm: "Permanently delete group '#{@group.name}' and remove all members? This cannot be undone." } %>
   </p>
 <% end %>
