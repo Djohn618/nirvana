@@ -237,7 +237,7 @@ button.small, .btn.small {
 button.danger, .btn.danger {
   background: transparent;
   color: var(--danger);
-  border: 1px solid var(--danger-soft);
+  border: 1.5px solid var(--danger);
 }
 
 button.danger:hover {
@@ -714,3 +714,4 @@ hr { border: none; border-top: 1px solid var(--border-soft); margin: 32px 0; }
   width: 18px;
   height: 18px;
 }
+
