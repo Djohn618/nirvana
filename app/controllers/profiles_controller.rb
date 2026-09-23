@@ -26,14 +26,26 @@ def update
   # 2. E-Mail-Änderung (falls angefordert)
   if profile_params[:email] != current_user.email && profile_params[:email].present?
     new_email = profile_params[:email]
+
+    # Check ob Email im richtigen Format ist
+    unless new_email =~ URI::MailTo::EMAIL_REGEXP
+      current_user.errors.add(:email, "is not a valid email address")
+      render :edit, status: :unprocessable_entity
+      return
+    end
+
+    # Check ob Email schon von jemand anderem benutzt wird
+    if User.where.not(id: current_user.id).exists?(email: new_email.downcase)
+      current_user.errors.add(:email, "is already taken")
+      render :edit, status: :unprocessable_entity
+      return
+    end
+
     token = SecureRandom.urlsafe_base64
 
     ActiveRecord::Base.transaction do
       current_user.update!(unconfirmed_email: new_email, confirmation_token: token)
-      confirmation_link = "http://localhost:3000/profile/confirm?token=#{token}"
-      Rails.logger.debug "=== EMAIL CONFIRMATION LINK ==="
-      Rails.logger.debug confirmation_link
-      Rails.logger.debug "==============================="
+      Rails.logger.info "Email confirmation link for #{new_email}: #{confirm_profile_url(token: token)}"
     end
   end
 
@@ -55,14 +67,11 @@ end
   user = User.find_by(confirmation_token: params[:token])
 
   if user && user.unconfirmed_email.present?
-    ActiveRecord::Base.transaction do
-      user.update!(
-        email: user.unconfirmed_email,
-        unconfirmed_email: nil,
-        confirmation_token: nil
-      )
+    if user.update(email: user.unconfirmed_email, unconfirmed_email: nil, confirmation_token: nil)
+      redirect_to profile_path, notice: "Email successfully changed."
+    else
+      redirect_to root_path, alert: "Email could not be confirmed."
     end
-    redirect_to profile_path, notice: "Email successfully changed to #{user.email}."
   else
     redirect_to root_path, alert: "Invalid or expired confirmation link."
   end

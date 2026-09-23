@@ -21,7 +21,7 @@ Rails.application.routes.draw do
   resources :habit_logs, only: [:new, :create]
 
   # Groups
-  resources :groups do
+  resources :groups, only: [:index, :show, :new, :create, :destroy] do
     resources :memberships, only: [:create, :destroy]
   end
 

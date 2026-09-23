@@ -21,18 +21,7 @@ class MembershipsController < ApplicationController
     @group = Group.find(params[:group_id])
     @membership = @group.memberships.find(params[:id])
     authorize @membership
-
-    user = @membership.user
-    group = @group
-
-    ActiveRecord::Base.transaction do
-      @membership.destroy!
-      habit = user.habits.find_by(name: group.focus_habit_name)
-      if habit && habit.habit_logs.count.zero?
-        habit.destroy!
-      end
-    end
-
+    @membership.destroy
     redirect_to @group, notice: "Membership removed."
   end
 end
