@@ -27,7 +27,7 @@
           <% if user != current_user %>
             <%= button_to "Delete", admin_user_path(user), method: :delete,
                 class: "danger small",
-                data: { confirm: "Permanently delete user '#{user.username}' and all their data? This cannot be undone." } %>
+                onclick: "return confirm('Permanently delete user \\'#{user.username}\\' and all their data? This cannot be undone.')" %>
           <% end %>
         </td>
       </tr>
