@@ -10,11 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_22_111052) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_23_091402) do
   create_table "groups", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.integer "creator_id"
     t.text "description"
+    t.string "focus_habit_name", default: "Focus Habit", null: false
     t.string "name"
     t.datetime "updated_at", null: false
   end

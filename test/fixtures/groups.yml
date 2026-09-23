@@ -1,4 +1,5 @@
 morning_crew:
   name: Morning Crew
   description: We rise early
+  focus_habit_name: Wake up early
   creator_id: <%= ActiveRecord::FixtureSet.identify(:member) %>

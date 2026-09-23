@@ -4,27 +4,35 @@ class MembershipsController < ApplicationController
   def create
     @group = Group.find(params[:group_id])
 
-    if @group.memberships.exists?(user: current_user)
-      redirect_to @group, alert: "You're already a member."
-      return
+    ActiveRecord::Base.transaction do
+      Membership.create!(user: current_user, group: @group, role: :member)
+      # Focus-Habit automatisch anlegen falls nicht vorhanden
+      unless current_user.habits.exists?(name: @group.focus_habit_name)
+        current_user.habits.create!(name: @group.focus_habit_name)
+      end
     end
 
-    Membership.create!(user: current_user, group: @group, role: :member)
-    redirect_to @group, notice: "You joined the group!"
+    redirect_to @group, notice: "You joined '#{@group.name}'! The focus habit '#{@group.focus_habit_name}' was added to your habits."
+  rescue ActiveRecord::RecordInvalid => e
+    redirect_to @group, alert: "Could not join: #{e.message}"
   end
 
   def destroy
     @group = Group.find(params[:group_id])
     @membership = @group.memberships.find(params[:id])
+    authorize @membership
 
-    is_leader = @group.creator == current_user ||
-                @group.memberships.exists?(user: current_user, role: :leader)
+    user = @membership.user
+    group = @group
 
-    if @membership.user == current_user || is_leader || current_user.admin?
-      @membership.destroy
-      redirect_to @group, notice: "Membership ended."
-    else
-      redirect_to @group, alert: "Not authorized."
+    ActiveRecord::Base.transaction do
+      @membership.destroy!
+      habit = user.habits.find_by(name: group.focus_habit_name)
+      if habit && habit.habit_logs.count.zero?
+        habit.destroy!
+      end
     end
+
+    redirect_to @group, notice: "Membership removed."
   end
 end

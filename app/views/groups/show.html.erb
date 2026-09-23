@@ -6,6 +6,16 @@
 <p class="subtitle"><%= @group.description %></p>
 <p class="text-small text-muted">Created by: <%= @group.creator.username %></p>
 
+<div class="card mt-4 mb-4">
+  <h3 style="margin: 0 0 8px 0;">Focus Habit</h3>
+  <p style="margin: 0; font-family: 'Fraunces', Georgia, serif; font-size: 20px; color: var(--gold);">
+    <%= @group.focus_habit_name %>
+  </p>
+  <p class="text-small text-muted" style="margin-top: 8px;">
+    Every member automatically tracks this habit.
+  </p>
+</div>
+
 <% unless @is_member %>
   <p>
     <%= button_to "Join group", group_memberships_path(@group), method: :post %>
@@ -20,6 +30,7 @@
       <th>Name</th>
       <th>Role</th>
       <th>Today</th>
+      <th>Streak</th>
       <% if @is_leader %>
         <th>Action</th>
       <% end %>
@@ -35,11 +46,29 @@
           </span>
         </td>
         <td>
-          <% stats = @member_stats[membership.user_id] %>
-          <% if stats && stats[:total] > 0 %>
-            <%= stats[:done] %>/<%= stats[:total] %> done
+          <% focus_habit = @focus_habits[membership.user_id] %>
+          <% if focus_habit %>
+            <% log = focus_habit.habit_logs.find_by(date: Date.today) %>
+            <% if log&.completed %>
+              <span class="status-done">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="icon"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg>
+                Done today
+              </span>
+            <% else %>
+              <span class="status-open">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="icon"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                Not yet
+              </span>
+            <% end %>
           <% else %>
-            <span class="text-muted">No habits</span>
+            <span class="text-muted">Habit not set</span>
+          <% end %>
+        </td>
+        <td>
+          <% if focus_habit %>
+            <span class="status-streak"><%= @streaks[membership.user_id] %> days</span>
+          <% else %>
+            <span class="text-muted">–</span>
           <% end %>
         </td>
         <% if @is_leader %>
@@ -47,7 +76,7 @@
             <% if membership.user != current_user %>
               <%= button_to "Remove", group_membership_path(@group, membership), method: :delete,
                   class: "danger small",
-                  onclick: "return confirm('Remove #{membership.user.username} from this group? They will lose access.')" %>
+                  onclick: "return confirm('Remove #{membership.user.username} from this group?')" %>
             <% end %>
           </td>
         <% end %>
@@ -61,7 +90,7 @@
     <% my_membership = @group.memberships.find_by(user: current_user) %>
     <%= button_to "Leave group", group_membership_path(@group, my_membership), method: :delete,
         class: "danger",
-        onclick: "return confirm('Leave this group? You will need to be added back if you want to rejoin.')" %>
+        onclick: "return confirm('Leave this group? The focus habit will be removed from your habits if you have no check-ins for it yet.')" %>
   </p>
 <% end %>
 
@@ -69,6 +98,6 @@
   <p class="mt-4">
     <%= button_to "Delete group", group_path(@group), method: :delete,
         class: "danger",
-        onclick: "return confirm('Permanently delete group \\'#{@group.name}\\' and remove all members? This cannot be undone.')" %>
+        onclick: "return confirm('Permanently delete group \\'#{@group.name}\\' and remove all members?')" %>
   </p>
 <% end %>

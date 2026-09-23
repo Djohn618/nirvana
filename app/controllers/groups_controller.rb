@@ -3,23 +3,22 @@ class GroupsController < ApplicationController
 
   def index
     @my_groups = current_user.groups
-    @other_groups = Group.where.not(id: @my_groups.pluck(:id))
+    @other_groups = Group.where.not(id: current_user.group_ids)
   end
 
   def show
     @group = Group.find(params[:id])
     @memberships = @group.memberships.includes(:user)
-    @is_member = @group.memberships.exists?(user: current_user)
-    @is_leader = @group.creator == current_user ||
-                 @group.memberships.exists?(user: current_user, role: :leader)
+    @is_member = @group.members.include?(current_user)
+    @is_leader = current_user_membership&.role == "leader"
 
-    member_ids = @group.members.pluck(:id)
-    @member_stats = {}
-    member_ids.each do |mid|
-      user = User.find(mid)
-      total = user.habits.count
-      done = user.habit_logs.where(date: Date.today, completed: true).count
-      @member_stats[mid] = { total: total, done: done }
+    # Focus-Habit für jedes Member laden
+    @focus_habits = {}
+    @streaks = {}
+    @memberships.each do |m|
+      habit = m.user.habits.find_by(name: @group.focus_habit_name)
+      @focus_habits[m.user_id] = habit
+      @streaks[m.user_id] = habit ? calculate_streak(habit) : 0
     end
   end
 
@@ -31,18 +30,23 @@ class GroupsController < ApplicationController
     @group = Group.new(group_params)
     @group.creator = current_user
 
-    if @group.save
+    ActiveRecord::Base.transaction do
+      @group.save!
       Membership.create!(user: current_user, group: @group, role: :leader)
-      redirect_to @group, notice: "Group '#{@group.name}' created!"
-    else
-      render :new, status: :unprocessable_entity
+      # Focus-Habit automatisch für Ersteller anlegen falls nicht vorhanden
+      unless current_user.habits.exists?(name: @group.focus_habit_name)
+        current_user.habits.create!(name: @group.focus_habit_name)
+      end
     end
+
+    redirect_to @group, notice: "Group '#{@group.name}' created!"
+  rescue ActiveRecord::RecordInvalid
+    render :new, status: :unprocessable_entity
   end
 
   def destroy
     @group = Group.find(params[:id])
     authorize @group
-
     @group.destroy
     redirect_to groups_path, notice: "Group deleted."
   end
@@ -50,6 +54,24 @@ class GroupsController < ApplicationController
   private
 
   def group_params
-    params.require(:group).permit(:name, :description)
+    params.require(:group).permit(:name, :description, :focus_habit_name)
+  end
+
+  def current_user_membership
+    @group.memberships.find_by(user: current_user)
+  end
+
+  def calculate_streak(habit)
+    streak = 0
+    date = Date.today
+
+    loop do
+      log = habit.habit_logs.find_by(date: date, completed: true)
+      break unless log
+      streak += 1
+      date -= 1.day
+    end
+
+    streak
   end
 end

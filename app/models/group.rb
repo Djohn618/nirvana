@@ -1,16 +1,11 @@
 class Group < ApplicationRecord
-  # --- Beziehungen ---
-  # Eine Gruppe gehört einem Ersteller (= ein User)
-  belongs_to :creator, class_name: "User"
+  has_paper_trail
 
-  # Eine Gruppe hat viele Mitglieder über die Membership-Tabelle
+  belongs_to :creator, class_name: "User", foreign_key: "creator_id"
   has_many :memberships, dependent: :destroy
   has_many :members, through: :memberships, source: :user
 
-  # --- Validierungen ---
-  validates :name, presence: true
+  validates :name, presence: true, length: { minimum: 3, maximum: 100 }
   validates :description, presence: true
-
-  # --- Aktivitätsprotokoll ---
-  has_paper_trail
+  validates :focus_habit_name, presence: true, length: { minimum: 2, maximum: 100 }
 end

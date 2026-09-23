@@ -1,11 +1,13 @@
 <p>
   <%= link_to "← Back to groups", groups_path, class: "text-muted" %>
 </p>
-<h1>Create new group</h1>
+
+<h1>Create a new group</h1>
+<p class="subtitle">Rally your accountability circle around one shared discipline.</p>
 
 <%= form_with model: @group do |f| %>
   <% if @group.errors.any? %>
-    <div style="color: red;">
+    <div class="error-box">
       <ul>
         <% @group.errors.full_messages.each do |msg| %>
           <li><%= msg %></li>
@@ -15,17 +17,25 @@
   <% end %>
 
   <div>
-    <%= f.label :name, "Group name" %><br>
-    <%= f.text_field :name, required: true %>
+    <%= f.label :name, "Group name" %>
+    <%= f.text_field :name, required: true, placeholder: "e.g. Morning Crew" %>
   </div>
 
   <div>
-    <%= f.label :description, "Description" %><br>
-    <%= f.text_area :description, rows: 4, required: true %>
+    <%= f.label :focus_habit_name, "Focus habit" %>
+    <%= f.text_field :focus_habit_name, required: true, placeholder: "e.g. Wake up at 5am" %>
+    <p class="text-small text-muted mt-4">
+      This habit will be automatically added to every member who joins the group.
+    </p>
   </div>
 
   <div>
-  <%= f.submit "Create group" %>
-  <%= link_to "Cancel", groups_path, class: "btn secondary" %>
-</div>
+    <%= f.label :description, "Description" %>
+    <%= f.text_area :description, required: true, rows: 3, placeholder: "What is this group about?" %>
+  </div>
+
+  <div>
+    <%= f.submit "Create group" %>
+    <%= link_to "Cancel", groups_path, class: "btn secondary" %>
+  </div>
 <% end %>

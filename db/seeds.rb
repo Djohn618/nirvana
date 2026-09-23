@@ -53,6 +53,7 @@ end
 group = Group.create!(
   name: "Morning Crew",
   description: "We rise early every day and stick to our routine.",
+  focus_habit_name: "Wake up early",
   creator: user1
 )
 
