@@ -1,40 +1,73 @@
-# Nirvana – Comeback Tracker
+# Nirvana – Comeback-Tracker für Disziplin
 
-A comeback tracker for discipline & productivity.
-Users create their own habits, check in daily, track streaks,
-and motivate each other in accountability groups.
+Multi-User-Applikation (Modul 223) – Ruby on Rails.
 
-## Setup (for teacher / new PC)
-
-1. Clone repository:
-   git clone https://github.com/Djohn618/nirvana.git
-   cd nirvana
-
-2. Install gems:
-   bundle install
-
-3. Create database and load test data:
-   bin/rails db:setup
-
-4. Start server:
-   bin/rails server
-
-5. Open browser: http://localhost:3000
-
-## Test login (after db:seed)
-
-- Admin: admin@nirvana.ch / Admin12345678
-- User: user@nirvana.ch / User12345678
-
-## Run tests
-
-bin/rails test
-
-## Tech stack
+## Voraussetzungen
 
 - Ruby 4.0.6
 - Rails 8.1.3.1
-- SQLite3
-- Pundit (authorization)
-- PaperTrail (activity log)
-- bcrypt (password hashing)
+- Bundler 2.5.x
+- SQLite 3
+
+## Installation
+
+### 1. ZIP entpacken und in Ordner wechseln
+
+```bash
+cd nirvana-main
+```
+
+### 2. Berechtigungen für bin/-Skripte setzen
+
+**Wichtig:** Beim Entpacken der ZIP-Datei gehen unter Linux/Mac die
+Ausführungs-Berechtigungen verloren. Deswegen zuerst:
+
+```bash
+chmod +x bin/*
+```
+
+### 3. Dependencies installieren
+
+```bash
+bundle install
+```
+
+### 4. Datenbank aufsetzen
+
+```bash
+bin/rails db:setup
+```
+
+Erstellt die SQLite-Datenbank, führt Migrations aus und lädt Test-Daten.
+
+### 5. Server starten
+
+```bash
+bin/rails server
+```
+
+App läuft auf: http://localhost:3000
+
+## Test-Logins
+
+| Rolle  | Email               | Passwort        |
+|--------|---------------------|-----------------|
+| Admin  | admin@nirvana.ch    | Admin12345678   |
+| Member | user@nirvana.ch     | User12345678    |
+| Member | sarah@nirvana.ch    | Sarah12345678   |
+
+## Tests ausführen
+
+```bash
+bin/rails test
+```
+
+Sollte 17 grüne Tests zeigen.
+
+## Vollständige Dokumentation
+
+Siehe `docs/dokumentation.md` bzw. `docs/Projektdokumentation_Nirvana.docx`
+
+## Referenz
+
+Public GitHub Repo: https://github.com/Djohn618/nirvana
