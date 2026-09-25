@@ -24,7 +24,7 @@ gem "bcrypt", "~> 3.1.7"
 gem "pundit", "~> 2.4"
 
 # Aktivitätsprotokoll (loggt automatisch alle Änderungen)
-gem "paper_trail", "~> 16.0"
+gem "paper_trail", "~> 17.0"
 
 # Kompatibilität für Cookie-/Session-Verarbeitung in dieser Rails-Version
 gem "json", "~> 2.0"
