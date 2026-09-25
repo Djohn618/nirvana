@@ -66,7 +66,7 @@ Sollte 17 grüne Tests zeigen.
 
 ## Vollständige Dokumentation
 
-Siehe `docs/dokumentation.md` bzw. `docs/Projektdokumentation_Nirvana.docx`
+Siehe `docs/dokumentation.md` bzw. `jOhn_Kothalawalage-deshan_dokumentation.pdf` liegt als PDF in der Moodle-Abgabe
 
 ## Referenz
 
